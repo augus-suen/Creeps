@@ -1,4 +1,4 @@
-package com.jungle.creeps.http.service;
+package com.jungle.creeps.http.api;
 
 import com.jungle.creeps.bean.UserBean;
 

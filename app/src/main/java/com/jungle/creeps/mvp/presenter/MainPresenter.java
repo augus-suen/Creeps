@@ -3,12 +3,11 @@ package com.jungle.creeps.mvp.presenter;
 import android.text.TextUtils;
 
 import com.jungle.creeps.bean.UserBean;
+import com.jungle.creeps.mvp.model.BaseSubscriber;
 import com.jungle.creeps.mvp.model.MainModel;
 import com.jungle.creeps.mvp.view.BaseView;
 
 import java.util.HashMap;
-
-import rx.Subscriber;
 
 /**
  * Created by xw on 2016/11/1.
@@ -40,7 +39,7 @@ public class MainPresenter implements BasePresenter {
         if (mModel != null) {
             HashMap<String, String> map = new HashMap<>();
             map.put("user", loginName);
-            mModel.addParams(map).subscribe(new Subscriber<UserBean>() {
+            mModel.addParams(map).subscribe(new BaseSubscriber<UserBean>() {
                 @Override
                 public void onStart() {  //先显示对话框
                     mMainView.showProgressDialog();
@@ -59,9 +58,10 @@ public class MainPresenter implements BasePresenter {
                 }
 
                 @Override
-                public void onNext(UserBean user) {
-                    mMainView.showText(user);
+                public void onAfter(UserBean userBean) {
+                    mMainView.showText(userBean);
                 }
+
             });
         }
 
