@@ -46,7 +46,7 @@ public class MainActivity extends BaseActivity implements BaseView {
     private void initView() {
         dialog = new ProgressDialog(this);
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        dialog.setMessage("正在搜索中");
+        dialog.setMessage("正在搜索中...");
     }
 
     @OnClick(R.id.search_btn)
