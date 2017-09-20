@@ -1,22 +1,23 @@
 package com.jungle.creeps.mvp.presenter;
 
+import android.content.Context;
 import android.text.TextUtils;
 
 import com.jungle.creeps.bean.UserBean;
 import com.jungle.creeps.mvp.model.BaseSubscriber;
 import com.jungle.creeps.mvp.model.MainModel;
 import com.jungle.creeps.mvp.view.BaseView;
+import com.jungle.creeps.utils.KeyBoardUtils;
 
 import java.util.HashMap;
 
-/**
- * Created by xw on 2016/11/1.
- */
-public class MainPresenter implements BasePresenter {
+public class UserPresenter implements BasePresenter {
+    private Context ctx;
     private BaseView mMainView;
     private MainModel mModel;
 
-    public MainPresenter() {
+    public UserPresenter(Context _ctx) {
+        this.ctx = _ctx;
         mModel = new MainModel();
     }
 
@@ -30,7 +31,6 @@ public class MainPresenter implements BasePresenter {
         mMainView = null;
     }
 
-    @Override
     public void searchUser(String loginName) {
         if (TextUtils.isEmpty(loginName.trim())) {
             mMainView.showErrorMessage("请输入合法登录名");
@@ -46,12 +46,13 @@ public class MainPresenter implements BasePresenter {
                 }
 
                 @Override
-                public void onCompleted() {  //请求结束，对话框消失
+                public void onCompleted() {
                     mMainView.hideProgressDialog();
+                    KeyBoardUtils.SwitchKeyBoardShowing(ctx);
                 }
 
                 @Override
-                public void onError(Throwable e) {//error时
+                public void onError(Throwable e) {
                     e.printStackTrace();
                     mMainView.hideProgressDialog();
                     mMainView.showErrorMessage("搜索失败");
@@ -61,7 +62,6 @@ public class MainPresenter implements BasePresenter {
                 public void onAfter(UserBean userBean) {
                     mMainView.showText(userBean);
                 }
-
             });
         }
 
