@@ -2,6 +2,7 @@ package com.jungle.creeps.activity;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -12,19 +13,20 @@ import com.jungle.creeps.bean.UserBean;
 import com.jungle.creeps.mvp.presenter.UserPresenter;
 import com.jungle.creeps.mvp.view.BaseView;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 
-public class MainActivity extends BaseActivity implements BaseView {
 
-    @InjectView(R.id.tv)
+public class MainActivity extends AppCompatActivity implements BaseView {
+
+    @BindView(R.id.tv)
     TextView mTextView;
 
-    @InjectView(R.id.search_btn)
+    @BindView(R.id.search_btn)
     Button mButton;
 
-    @InjectView(R.id.ed_text)
+    @BindView(R.id.ed_text)
     EditText mEditText;
 
     private ProgressDialog dialog;
@@ -34,7 +36,7 @@ public class MainActivity extends BaseActivity implements BaseView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         initView();
         mMainPresenter = new UserPresenter(this);
         mMainPresenter.attachView(this);
