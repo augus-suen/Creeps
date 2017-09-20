@@ -4,12 +4,15 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.jungle.creeps.bean.UserBean;
-import com.jungle.creeps.mvp.model.BaseSubscriber;
+import com.jungle.creeps.mvp.model.BaseObServer;
 import com.jungle.creeps.mvp.model.MainModel;
 import com.jungle.creeps.mvp.view.BaseView;
 import com.jungle.creeps.utils.KeyBoardUtils;
 
 import java.util.HashMap;
+
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
 
 public class UserPresenter implements BasePresenter {
     private Context ctx;
@@ -39,28 +42,31 @@ public class UserPresenter implements BasePresenter {
         if (mModel != null) {
             HashMap<String, String> map = new HashMap<>();
             map.put("user", loginName);
-            mModel.addParams(map).subscribe(new BaseSubscriber<UserBean>() {
+            mModel.addParams(map).subscribe(new BaseObServer<UserBean>() {
+
                 @Override
-                public void onStart() {  //先显示对话框
+                public void onSubscribe(@NonNull Disposable d) {
+                    super.onSubscribe(d);
                     mMainView.showProgressDialog();
-                }
-
-                @Override
-                public void onCompleted() {
-                    mMainView.hideProgressDialog();
-                    KeyBoardUtils.SwitchKeyBoardShowing(ctx);
-                }
-
-                @Override
-                public void onError(Throwable e) {
-                    e.printStackTrace();
-                    mMainView.hideProgressDialog();
-                    mMainView.showErrorMessage("搜索失败");
                 }
 
                 @Override
                 public void onAfter(UserBean userBean) {
                     mMainView.showText(userBean);
+                }
+
+                @Override
+                public void onComplete() {
+                    super.onComplete();
+                    mMainView.hideProgressDialog();
+                    KeyBoardUtils.SwitchKeyBoardShowing(ctx);
+                }
+
+                @Override
+                public void onError(@NonNull Throwable e) {
+                    super.onError(e);
+                    e.printStackTrace();
+                    mMainView.hideProgressDialog();
                 }
             });
         }

@@ -2,9 +2,9 @@ package com.jungle.creeps.http.api;
 
 import com.jungle.creeps.bean.UserBean;
 
+import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
-import rx.Observable;
 
 
 public interface GithubService {

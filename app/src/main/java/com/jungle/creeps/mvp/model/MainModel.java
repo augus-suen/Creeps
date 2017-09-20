@@ -7,18 +7,18 @@ import com.jungle.creeps.http.api.GithubService;
 
 import java.util.HashMap;
 
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 
 public class MainModel implements BaseModel<UserBean> {
     HashMap<String, String> params = new HashMap<>();
 
     @Override
-    public void subscribe(BaseSubscriber<UserBean> subscriber) {
+    public void subscribe(BaseObServer<UserBean> obServer) {
         GithubService githubService = HttpMethods.getInstance().getRetrofit().create(GithubService.class);
         githubService.getUser(params.get("user")).subscribeOn(Schedulers.io()).unsubscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
+                .observeOn(AndroidSchedulers.mainThread()).subscribe(obServer);
     }
 
     @Override
